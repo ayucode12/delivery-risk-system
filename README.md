@@ -74,30 +74,21 @@ Premium is dynamically calculated based on worker behavior:
 
 ### Formula:
 
-```
-Weekly Premium = Base Premium × (1 + Fraud Risk Score) - Loyalty Discount
-
-Where:
-Fraud Risk Score = (GPS_Spoofing × 0.20) + (Route_Deviation × 0.15) + (Late_Delivery × 0.10) - (Good_Behavior × 0.10)
-Loyalty Discount = (Weeks_Active / 52) × 0.05 × Base Premium
-```
 
 ### Risk Factors:
 - Fake GPS detected → +20%  
 - Route deviation → +15%  
 - Late delivery → +10%  
 - Consistent good behavior → -10%  
-- Loyalty bonus (per week active) → -5% annual
 
 ### Explanation:
 - Higher risk leads to higher premium (penalty-based system)  
 - Honest behavior reduces premium over time  
 - Encourages fair and responsible delivery practices  
-- Long-term loyalty rewards committed workers
 
 ### Example:
-- Honest worker (52 weeks active) → ₹100 base - ₹5 loyalty = ₹95 premium  
-- Risky worker (new) → ₹100 base + ₹25 fraud adjustment = ₹125-₹200 premium  
+- Honest worker → ₹100 premium  
+- Risky worker → ₹150–₹200 premium  
 
 ---
 
@@ -135,9 +126,8 @@ We chose a mobile platform because:
 - **Frontend:** React Native  
 - **Backend:** Node.js  
 - **Database:** MongoDB  
-- **AI/ML:** Python (Scikit-learn, TensorFlow)  
+- **AI/ML:** Python (Scikit-learn)  
 - **Maps & Location:** Google Maps API  
-- **Analytics:** Apache Kafka (real-time event streaming)
 
 ---
 
@@ -177,20 +167,17 @@ We do not rely solely on GPS. Instead, we combine behavioral and sensor-based in
 - Realistic travel routes  
 - Sensor data matches movement  
 - Network fluctuations in bad weather  
-- Consistent delivery completion rates  
 
 #### Fraudulent Worker:
 - Sudden location jumps (teleportation effect)  
 - No physical movement but changing GPS  
 - Identical patterns across multiple users  
 - Sensor mismatch  
-- Unrealistic delivery completion in seconds  
 
 👉 AI detects:
-- Unrealistic speed (>200 km/h)  
+- Unrealistic speed  
 - Static device + moving GPS  
 - Repeated suspicious patterns  
-- Coordinated behavior with other workers (>5 workers with identical patterns)  
 
 ---
 
@@ -202,34 +189,24 @@ Our system analyzes multiple layers of data:
 - Accelerometer (movement detection)  
 - Gyroscope (orientation changes)  
 - Device ID consistency  
-- Battery drain patterns  
-- App behavior metrics  
 
 #### Network-Level Data:
 - IP address tracking  
 - Network strength & latency  
-- Frequent IP switching (flagged if >3 switches per delivery)  
-- VPN/Proxy detection  
-- Cell tower triangulation  
+- Frequent IP switching  
 
 #### Behavioral Data:
-- Delivery history (completion rate, avg time)  
+- Delivery history  
 - Route deviation patterns  
 - Time per delivery  
-- Customer ratings and complaints  
-- Delivery density (deliveries per km²)  
 
 #### Environmental Data:
 - Weather API validation  
 - Traffic conditions  
-- Real-time incident data  
-- Geofence violations  
 
 #### Pattern Detection:
 - Cluster analysis for coordinated fraud  
 - Identical behavior across multiple workers  
-- Behavioral fingerprinting  
-- Time-series anomaly detection  
 
 ---
 
@@ -238,94 +215,47 @@ Our system analyzes multiple layers of data:
 We ensure honest workers are not unfairly penalized.
 
 #### Soft Flagging:
-- First suspicious activity → Warning only (no penalty)  
-- Second incident → 24-hour suspension for verification  
+- First suspicious activity → Warning only  
 
 #### Multi-Step Verification:
 - Cross-check using sensor + network data  
-- Delay payout instead of rejection (hold for 24-48 hours)  
-- Automated verification before final decision  
+- Delay payout instead of rejection  
 
 #### Worker Feedback:
 - Allow explanation submission  
-- Enable live verification with random selfie/video proof  
-- Appeal mechanism for disputed flags  
+- Enable live verification  
 
 #### Grace Mechanism:
-- Relax rules during bad weather (GPS accuracy ±50m acceptable)  
-- Handle network issues intelligently (allow 2-3 min network gaps)  
-- Auto-whitelist workers with >99% accuracy track record  
+- Relax rules during bad weather  
+- Handle network issues intelligently  
 
 #### Escalation:
-- Repeated fraud (>3 flags) → Manual human review  
-- Verified fraud pattern → Account suspension + investigation  
-- Coordinated ring (>5 workers) → Law enforcement referral  
-- Verified genuine → No penalty + apology bonus  
+- Repeated fraud → Strong action  
+- Verified genuine → No penalty  
 
 ---
 
-### 🔐 System Strength & Resilience Metrics
+### 🔐 System Strength
 
-- **Multi-sensor validation** (8+ independent data points)  
-- **AI anomaly detection** (Isolation Forest + LSTM)  
-- **Behavioral intelligence** (Markov chains for expected behavior)  
-- **Cluster fraud detection** (DBSCAN algorithm)  
-
-**Fraud Detection Metrics:**
-- Detection Rate: 99.2% (tested on historical data)  
-- False Positive Rate: <1.5% (minimizes honest worker penalties)  
-- Average Detection Time: <2 minutes from fraud initiation  
-- Coordinated Ring Detection: 98.7% accuracy for groups >5 workers  
+- Multi-sensor validation  
+- AI anomaly detection  
+- Behavioral intelligence  
+- Cluster fraud detection  
 
 👉 This system is designed to withstand large-scale coordinated attacks (e.g., 500+ worker fraud rings).  
 👉 Result: Highly secure and fraud-resistant platform  
 
 ---
 
-## 📊 Implementation Timeline & Deployment
-
-### Phase 1: Foundation (March 20, 2026 - April 15, 2026)
-- Finalize architecture and data models  
-- Setup database and backend infrastructure  
-- Build initial sensor integration  
-
-### Phase 2: Core Development (April 16, 2026 - May 20, 2026)
-- Implement fraud detection algorithms  
-- Develop mobile app with GPS tracking  
-- Create admin dashboard  
-
-### Phase 3: Testing & Optimization (May 21, 2026 - June 10, 2026)
-- Load testing with 10,000+ concurrent users  
-- Fraud simulation tests  
-- Performance optimization  
-
-### Phase 4: Production Deployment (June 11, 2026 - June 30, 2026)
-- Staged rollout to 5 cities  
-- Real-time monitoring and alerting  
-- 24/7 support team activation  
-
----
-
 ## 🎯 Future Scope
 
 - Facial verification for worker identity  
-- Advanced deep learning fraud models (GANs for anomaly detection)  
-- Real-time fraud alert system with SMS/Push notifications  
+- Advanced deep learning fraud models  
+- Real-time fraud alert system  
 - Integration with large-scale delivery platforms  
-- Blockchain-based immutable transaction records  
-- Predictive premium models using ARIMA/Prophet  
 
 ---
 
 ## 📽️ Demo Video
 
 https://drive.google.com/file/d/1Hq18bEWg0UsdLKkhbPey0XYzKd9xQisj/view?usp=sharing
-
----
-
-## 📞 Support & Escalation
-
-For fraud investigations and technical issues:
-- **Email:** support@deliveryrisksystem.com  
-- **Emergency Hotline:** +91-XXXX-XXXX-XXXX  
-- **Response Time:** <1 hour for critical issues
