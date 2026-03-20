@@ -62,6 +62,19 @@ This project proposes a smart, AI-driven system to monitor delivery workers, det
 5. Fraud score is assigned to each worker  
 6. Weekly premium is calculated based on risk  
 7. Admin dashboard displays:
+   - Worker trust score  
+   - Fraud alerts  
+   - Performance analytics  
+
+---
+
+## 💰 Weekly Premium Model
+
+Premium is dynamically calculated based on worker behavior:
+
+### Formula:
+
+
 ### Risk Factors:
 - Fake GPS detected → +20%  
 - Route deviation → +15%  
@@ -246,14 +259,3 @@ We ensure honest workers are not unfairly penalized.
 ## 📽️ Demo Video
 
 https://drive.google.com/file/d/1Hq18bEWg0UsdLKkhbPey0XYzKd9xQisj/view?usp=sharing
-   - Worker trust score  
-   - Fraud alerts  
-   - Performance analytics  
-
----
-
-## 💰 Weekly Premium Model
-
-Premium is dynamically calculated based on worker behavior:
-
-### Formula:
