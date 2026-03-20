@@ -137,4 +137,4 @@ We chose a mobile platform because:
 
 ## 📽️ Demo Video
 
-(Add your video link here)
+https://drive.google.com/file/d/1Hq18bEWg0UsdLKkhbPey0XYzKd9xQisj/view?usp=sharing
