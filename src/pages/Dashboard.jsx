@@ -20,6 +20,22 @@ const Dashboard = ({ user: initialUser, onLogout }) => {
 
   useEffect(() => {
     fetchUserData();
+
+    // Zero-Touch UI Polling: Silently ping auto-claim every 10 seconds
+    const claimInterval = setInterval(async () => {
+      try {
+        const res = await api.post(`/auto-claim/${initialUser.id}`);
+        if (res.status === 201) {
+          // Success triggered by backend logic
+          alert(`⚡ ZERO-TOUCH ACTIVATED: ${res.data.message}\nPayout: ₹${res.data.claim.amount} for ${res.data.claim.reason}`);
+          fetchUserData(); // refresh dashboard
+        }
+      } catch (err) {
+        // Silently ignore 400s (conditions not met or claim exists)
+      }
+    }, 10000);
+
+    return () => clearInterval(claimInterval);
   }, [initialUser.id]);
 
   if (loading || !data.policy) {
@@ -78,8 +94,8 @@ const Dashboard = ({ user: initialUser, onLogout }) => {
                 <div style={{ fontSize: '1.2rem', fontWeight: 600, color: 'white' }}>{policy.policy_type} Tier</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '0.9rem', opacity: 0.9, color: 'white' }}>Coverage</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: 600, color: 'white' }}>₹{policy.weekly_coverage} / wk</div>
+                <div style={{ fontSize: '0.9rem', opacity: 0.9, color: 'white' }}>Active Coverage</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 600, color: 'white' }}>₹{policy.weekly_coverage} ({policy.coverage_hours} hrs/wk)</div>
               </div>
             </div>
 
@@ -96,8 +112,22 @@ const Dashboard = ({ user: initialUser, onLogout }) => {
               </div>
               
               <div style={{ marginTop: '12px', fontSize: '0.85rem', color: 'white', opacity: 0.9 }}>
-                * Base premium: ₹{policy.base_premium}. Adjusted dynamically based on weather, risk zone, and inactivity patterns.
+                * Base premium: ₹{policy.base_premium}
               </div>
+
+              {policy.modifiers && policy.modifiers.length > 0 && (
+                <div style={{ marginTop: '16px', background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px' }}>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--brand-primary)', display: 'block', marginBottom: '8px' }}>Active AI Modifiers</strong>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.85rem' }}>
+                    {policy.modifiers.map((mod, idx) => (
+                      <li key={idx} style={{ marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <ShieldCheck size={14} color="var(--accent-success)" />
+                        {mod}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 

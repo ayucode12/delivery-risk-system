@@ -36,8 +36,10 @@ const registerUser = (req, res) => {
         user_id: newUser.id,
         policy_type: 'Basic',
         weekly_coverage: 5000,
+        coverage_hours: 40,
         base_premium: 100,
         current_premium: 100, // Dynamic, starts at base
+        modifiers: [],
         last_updated: new Date().toISOString()
     };
 

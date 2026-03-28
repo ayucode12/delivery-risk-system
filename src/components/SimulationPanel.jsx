@@ -12,15 +12,8 @@ const SimulationPanel = ({ userId, refreshData }) => {
     }
   };
 
-  const autoClaim = async () => {
-    try {
-      await api.post(`/auto-claim/${userId}`);
-      refreshData();
-      alert("System simulated claims sweep! Check status.");
-    } catch (error) {
-      alert(error.response?.data?.error || "Claim error");
-    }
-  };
+  // The autoClaim manual button is removed because the Dashboard now polls automatically 
+  // every 10 seconds to simulate a true zero-touch async claims backend!
 
   return (
     <div className="glass-panel animate-slide-up" style={{ padding: '24px', animationDelay: '0.2s', marginTop: '24px' }}>
@@ -36,32 +29,34 @@ const SimulationPanel = ({ userId, refreshData }) => {
         
         <button className="btn-secondary" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '16px' }} onClick={() => triggerSimulation('rain')}>
           <CloudRainWind size={32} color="var(--brand-primary)" />
-          Simulate Heavy Rain
+          <strong>Mock OpenWeather API</strong>
+          <span style={{ fontSize: '0.8rem' }}>Trigger Severe Rain</span>
         </button>
 
         <button className="btn-secondary" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '16px' }} onClick={() => triggerSimulation('inactivity')}>
           <PauseCircle size={32} color="var(--accent-warning)" />
-          Simulate Inactivity
+          <strong>Mock Telematics API</strong>
+          <span style={{ fontSize: '0.8rem' }}>Trigger Inactivity Flag</span>
         </button>
 
         <button className="btn-danger" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '16px' }} onClick={() => triggerSimulation('deviation')}>
           <MapPinOff size={32} color="var(--accent-danger)" />
-          Route Deviation (Fraud)
+          <strong>Mock Google Maps API</strong>
+          <span style={{ fontSize: '0.8rem' }}>Route Deviation (Fraud)</span>
         </button>
         
         <button className="btn-primary" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '16px' }} onClick={() => triggerSimulation('safe-area')}>
           <BadgeCheck size={32} color="white" />
-          Toggle Safe Area
+          <strong>Mock Civic Data API</strong>
+          <span style={{ fontSize: '0.8rem' }}>Toggle Safe Zone</span>
         </button>
       </div>
 
-      <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--border-glass)' }}>
-        <h4 style={{ marginBottom: '16px' }}>Zero-Touch Claims Trigger</h4>
-        <button className="btn-primary" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', width: '100%' }} onClick={autoClaim}>
-          Force System Claims Check Sweep
-        </button>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '8px', textAlign: 'center' }}>
-          Automatically approves claim if user is at high risk (Severe Weather or Inactive in Risk Zone).
+      <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--border-glass)', textAlign: 'center' }}>
+        <h4 style={{ marginBottom: '8px', color: 'var(--brand-primary)' }}>Live Zero-Touch Claims Enabled</h4>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+          This dashboard asynchronously polls the server core every 10 seconds via background workers. 
+          If AI identifies disruptions crossing the risk threshold, payouts occur instantly with zero manual intervention.
         </p>
       </div>
 
