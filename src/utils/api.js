@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api', // Backend running on port 5000
+    baseURL: '/api', // Relative path pointing to Vercel Serverless Functions
     headers: {
         'Content-Type': 'application/json'
     }
