@@ -6,8 +6,10 @@ const Registration = ({ onRegister }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone_number: '',
+    country_code: '+91',
     vehicle_type: 'Two-Wheeler',
-    city: ''
+    city: 'Mumbai',
+    insurance_type: 'Basic'
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -22,7 +24,11 @@ const Registration = ({ onRegister }) => {
     setError('');
 
     try {
-      const response = await api.post('/register', formData);
+      const payload = {
+        ...formData,
+        phone_number: `${formData.country_code}${formData.phone_number}`
+      };
+      const response = await api.post('/register', payload);
       onRegister(response.data.user);
     } catch (err) {
       setError(err.response?.data?.error || 'Registration failed');
@@ -71,16 +77,39 @@ const Registration = ({ onRegister }) => {
 
           <div className="input-group">
             <label htmlFor="phone_number">Phone Number</label>
-            <input 
-              type="tel" 
-              id="phone_number" 
-              name="phone_number" 
-              className="input-field" 
-              placeholder="Ex: 9876543210"
-              value={formData.phone_number}
-              onChange={handleChange}
-              required 
-            />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <select 
+                id="country_code" 
+                name="country_code" 
+                className="input-field" 
+                style={{ width: '35%' }}
+                value={formData.country_code}
+                onChange={handleChange}
+              >
+                <option value="+91">+91 (IN)</option>
+                <option value="+1">+1 (US)</option>
+                <option value="+44">+44 (UK)</option>
+                <option value="+61">+61 (AU)</option>
+              </select>
+              <input 
+                type="tel" 
+                id="phone_number" 
+                name="phone_number" 
+                className="input-field" 
+                style={{ width: '65%' }}
+                placeholder="Ex: 9876543210"
+                value={formData.phone_number}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, '');
+                  if(val.length <= 10) {
+                    setFormData({ ...formData, phone_number: val });
+                  }
+                }}
+                pattern="[0-9]{10}"
+                title="Please enter exactly 10 digits"
+                required 
+              />
+            </div>
           </div>
 
           <div className="input-group">
@@ -101,17 +130,40 @@ const Registration = ({ onRegister }) => {
 
           <div className="input-group">
             <label htmlFor="city">City</label>
-            <input 
-              type="text" 
+            <select 
               id="city" 
               name="city" 
-              className="input-field" 
-              placeholder="Ex: Mumbai"
+              className="input-field"
               value={formData.city}
               onChange={handleChange}
               required 
-            />
+            >
+              <option value="Mumbai">Mumbai</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Bengaluru">Bengaluru</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Chennai">Chennai</option>
+              <option value="Kolkata">Kolkata</option>
+              <option value="Pune">Pune</option>
+              <option value="Ahmedabad">Ahmedabad</option>
+            </select>
           </div>
+
+          <div className="input-group">
+            <label htmlFor="insurance_type">Insurance Type</label>
+            <select 
+              id="insurance_type" 
+              name="insurance_type" 
+              className="input-field"
+              value={formData.insurance_type}
+              onChange={handleChange}
+            >
+              <option value="Basic">Basic (Standard Coverage)</option>
+              <option value="Premium">Premium (+ Weather Protection)</option>
+              <option value="Comprehensive">Comprehensive (Full Risk Coverage)</option>
+            </select>
+          </div>
+
 
           <button 
             type="submit" 

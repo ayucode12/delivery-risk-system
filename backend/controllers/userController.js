@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('crypto'); // Built in crypto
 const generateId = () => Math.random().toString(36).substring(2, 10);
 
 const registerUser = (req, res) => {
-    const { name, phone_number, vehicle_type, city } = req.body;
+    const { name, phone_number, vehicle_type, city, insurance_type } = req.body;
 
     if (!name || !phone_number || !vehicle_type || !city) {
         return res.status(400).json({ error: "All fields are required" });
@@ -34,7 +34,7 @@ const registerUser = (req, res) => {
     const defaultPolicy = {
         id: generateId(),
         user_id: newUser.id,
-        policy_type: 'Basic',
+        policy_type: insurance_type || 'Basic',
         weekly_coverage: 5000,
         base_premium: 100,
         current_premium: 100, // Dynamic, starts at base
