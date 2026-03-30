@@ -13,6 +13,9 @@ const Dashboard = ({ user: initialUser, onLogout }) => {
       setData(res.data);
     } catch (err) {
       console.error("Failed to load user data", err);
+      if (err.response && err.response.status === 404) {
+        onLogout();
+      }
     } finally {
       setLoading(false);
     }
