@@ -6,7 +6,8 @@ import { Package, ShieldCheck } from 'lucide-react';
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
     phone_number: '',
-    country_code: '+91'
+    country_code: '+91',
+    password: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -23,7 +24,8 @@ const Login = ({ onLogin }) => {
 
     try {
       const payload = {
-        phone_number: `${formData.country_code}${formData.phone_number}`
+        phone_number: `${formData.country_code}${formData.phone_number}`,
+        password: formData.password
       };
       const response = await api.post('/login', payload);
       onLogin(response.data.user);
@@ -94,6 +96,20 @@ const Login = ({ onLogin }) => {
                 required 
               />
             </div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              className="input-field" 
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              required 
+            />
           </div>
 
           <button 

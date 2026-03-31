@@ -8,6 +8,7 @@ const Registration = ({ onRegister }) => {
     name: '',
     phone_number: '',
     country_code: '+91',
+    password: '',
     vehicle_type: 'Two-Wheeler',
     city: 'Mumbai',
     insurance_type: 'Basic'
@@ -111,6 +112,21 @@ const Registration = ({ onRegister }) => {
                 required 
               />
             </div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              className="input-field" 
+              placeholder="Enter a secure password"
+              value={formData.password}
+              onChange={handleChange}
+              required 
+              minLength="6"
+            />
           </div>
 
           <div className="input-group">

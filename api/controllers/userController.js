@@ -5,9 +5,9 @@ const { v4: uuidv4 } = require('crypto'); // Built in crypto
 const generateId = () => Math.random().toString(36).substring(2, 10);
 
 const registerUser = (req, res) => {
-    const { name, phone_number, vehicle_type, city, insurance_type } = req.body;
+    const { name, phone_number, password, vehicle_type, city, insurance_type } = req.body;
 
-    if (!name || !phone_number || !vehicle_type || !city) {
+    if (!name || !phone_number || !password || !vehicle_type || !city) {
         return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -21,6 +21,7 @@ const registerUser = (req, res) => {
         id: generateId(),
         name,
         phone_number,
+        password, // In a real app, hash this password (e.g., bcrypt)
         vehicle_type,
         city,
         risk_active: false,
@@ -72,15 +73,19 @@ const getAllUsers = (req, res) => {
 };
 
 const loginUser = (req, res) => {
-    const { phone_number } = req.body;
+    const { phone_number, password } = req.body;
 
-    if (!phone_number) {
-        return res.status(400).json({ error: "Phone number is required" });
+    if (!phone_number || !password) {
+        return res.status(400).json({ error: "Phone number and password are required" });
     }
 
     const user = store.users.find(u => u.phone_number === phone_number);
     if (!user) {
         return res.status(404).json({ error: "User not found. Please register first." });
+    }
+
+    if (user.password !== password) {
+        return res.status(401).json({ error: "Invalid password" });
     }
 
     const policy = store.policies.find(p => p.user_id === user.id);
