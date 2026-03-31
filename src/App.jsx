@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Landing from './pages/Landing';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(() => {
@@ -26,7 +27,7 @@ function App() {
         <Routes>
           <Route 
             path="/" 
-            element={currentUser ? <Navigate to="/dashboard" /> : <Navigate to="/register" />} 
+            element={currentUser ? <Navigate to="/dashboard" /> : <Landing />} 
           />
           <Route 
             path="/register" 
