@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { Package, ShieldCheck } from 'lucide-react';
 
-const Registration = ({ onRegister }) => {
+const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
-    name: '',
     phone_number: '',
-    country_code: '+91',
-    vehicle_type: 'Two-Wheeler',
-    city: 'Mumbai',
-    insurance_type: 'Basic'
+    country_code: '+91'
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,13 +23,13 @@ const Registration = ({ onRegister }) => {
 
     try {
       const payload = {
-        ...formData,
         phone_number: `${formData.country_code}${formData.phone_number}`
       };
-      const response = await api.post('/register', payload);
-      onRegister(response.data.user);
+      const response = await api.post('/login', payload);
+      onLogin(response.data.user);
+      navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed');
+      setError(err.response?.data?.error || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -48,10 +45,10 @@ const Registration = ({ onRegister }) => {
             <ShieldCheck size={36} color="var(--brand-secondary)" />
           </div>
           <h1 className="title-gradient" style={{ fontSize: '1.8rem', marginBottom: '8px' }}>
-            Delivery Protect Plus
+            Welcome Back
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-            Smart insurance and risk protection platform for modern delivery workers.
+            Login to your Delivery Protect Plus dashboard
           </p>
         </div>
 
@@ -62,20 +59,6 @@ const Registration = ({ onRegister }) => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="name">Full Name</label>
-            <input 
-              type="text" 
-              id="name" 
-              name="name" 
-              className="input-field" 
-              placeholder="Ex: John Doe"
-              value={formData.name}
-              onChange={handleChange}
-              required 
-            />
-          </div>
-
           <div className="input-group">
             <label htmlFor="phone_number">Phone Number</label>
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -113,74 +96,21 @@ const Registration = ({ onRegister }) => {
             </div>
           </div>
 
-          <div className="input-group">
-            <label htmlFor="vehicle_type">Vehicle Type</label>
-            <select 
-              id="vehicle_type" 
-              name="vehicle_type" 
-              className="input-field"
-              value={formData.vehicle_type}
-              onChange={handleChange}
-            >
-              <option value="Two-Wheeler">Two-Wheeler</option>
-              <option value="Bicycle">Bicycle</option>
-              <option value="Electric Scooter">Electric Scooter</option>
-              <option value="Car">Car</option>
-            </select>
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="city">City</label>
-            <select 
-              id="city" 
-              name="city" 
-              className="input-field"
-              value={formData.city}
-              onChange={handleChange}
-              required 
-            >
-              <option value="Mumbai">Mumbai</option>
-              <option value="Delhi">Delhi</option>
-              <option value="Bengaluru">Bengaluru</option>
-              <option value="Hyderabad">Hyderabad</option>
-              <option value="Chennai">Chennai</option>
-              <option value="Kolkata">Kolkata</option>
-              <option value="Pune">Pune</option>
-              <option value="Ahmedabad">Ahmedabad</option>
-            </select>
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="insurance_type">Insurance Type</label>
-            <select 
-              id="insurance_type" 
-              name="insurance_type" 
-              className="input-field"
-              value={formData.insurance_type}
-              onChange={handleChange}
-            >
-              <option value="Basic">Basic (Standard Coverage)</option>
-              <option value="Premium">Premium (+ Weather Protection)</option>
-              <option value="Comprehensive">Comprehensive (Full Risk Coverage)</option>
-            </select>
-          </div>
-
-
           <button 
             type="submit" 
             className="btn-primary" 
             style={{ width: '100%', marginTop: '1rem', fontSize: '1rem', padding: '14px' }}
             disabled={loading}
           >
-            {loading ? 'Creating Account & Generating Policy...' : 'Register & Get Protected'}
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
         <div style={{ marginTop: '2rem', textAlign: 'center' }}>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-            Already registered?{' '}
-            <Link to="/login" style={{ color: 'var(--brand-primary)', textDecoration: 'none', fontWeight: 'bold' }}>
-              Login here
+            New to Delivery Protect Plus?{' '}
+            <Link to="/register" style={{ color: 'var(--brand-primary)', textDecoration: 'none', fontWeight: 'bold' }}>
+              Register here
             </Link>
           </p>
         </div>
@@ -190,4 +120,4 @@ const Registration = ({ onRegister }) => {
   );
 };
 
-export default Registration;
+export default Login;

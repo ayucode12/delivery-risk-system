@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Registration from './pages/Registration';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 
 function App() {
@@ -25,11 +26,19 @@ function App() {
         <Routes>
           <Route 
             path="/" 
+            element={currentUser ? <Navigate to="/dashboard" /> : <Navigate to="/register" />} 
+          />
+          <Route 
+            path="/register" 
             element={!currentUser ? <Registration onRegister={handleLogin} /> : <Navigate to="/dashboard" />} 
           />
           <Route 
+            path="/login" 
+            element={!currentUser ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />} 
+          />
+          <Route 
             path="/dashboard" 
-            element={currentUser ? <Dashboard user={currentUser} onLogout={handleLogout} /> : <Navigate to="/" />} 
+            element={currentUser ? <Dashboard user={currentUser} onLogout={handleLogout} /> : <Navigate to="/login" />} 
           />
         </Routes>
       </div>

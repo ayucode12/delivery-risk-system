@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const { registerUser, getUser, getAllUsers } = require('../controllers/userController');
+const { registerUser, loginUser, getUser, getAllUsers } = require('../controllers/userController');
 const { getPolicy } = require('../controllers/policyController');
 const { triggerRain, triggerInactivity, triggerRouteDeviation, triggerSafeArea } = require('../controllers/triggerController');
 const { processAutoClaim, getClaims } = require('../controllers/claimController');
 
 // User Routes
 router.post('/register', registerUser);
+router.post('/login', loginUser);
 router.get('/user/:id', getUser);
 router.get('/users', getAllUsers);
 

@@ -71,8 +71,31 @@ const getAllUsers = (req, res) => {
     res.json(store.users);
 };
 
+const loginUser = (req, res) => {
+    const { phone_number } = req.body;
+
+    if (!phone_number) {
+        return res.status(400).json({ error: "Phone number is required" });
+    }
+
+    const user = store.users.find(u => u.phone_number === phone_number);
+    if (!user) {
+        return res.status(404).json({ error: "User not found. Please register first." });
+    }
+
+    const policy = store.policies.find(p => p.user_id === user.id);
+    const userClaims = store.claims.filter(c => c.user_id === user.id);
+
+    res.json({
+        user,
+        policy,
+        claims: userClaims
+    });
+};
+
 module.exports = {
     registerUser,
     getUser,
-    getAllUsers
+    getAllUsers,
+    loginUser
 };
